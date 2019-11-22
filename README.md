@@ -4,7 +4,7 @@ An android client app (and cross platform command line server) to remotely unloc
 ## How it works
 
 The system is made of an Android app, containing a c++ library/binary acting as client, which performs
-a challenge-response (SCRAM-like) authentication against a python script (RemoteScreenUnlocker.py, in the *server* folder)
+a challenge-response (SCRAM-like) authentication against a python script (RemoteScreenUnlocker.py, in the *server* folder, running on port 11112)
 on a Linux PC. Upon successful authentication, the server issues the command:
 
 ```shell

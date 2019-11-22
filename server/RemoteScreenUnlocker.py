@@ -1,3 +1,4 @@
+import sys
 import logging
 import os
 import socket
@@ -15,11 +16,12 @@ def get_current_session():
 
 if __name__ == '__main__':
     if len(sys.argv) < 4:
-        print(f'Usage: {sys.argv[0]} <passphrase> <host> <port>')
+        print(f'Usage: {sys.argv[0]} <passphrase> <host>')
+        sys.exit(0)
     sharedSecret = blake2kdf(sys.argv[1].encode('utf-8'))
     current_session = get_current_session()
     bindsocket = socket.socket()
-    bindsocket.bind((sys.argv[2], int(sys.argv[3])))
+    bindsocket.bind((sys.argv[2], 11112))
     bindsocket.listen(5)
     while True:
         newsocket, fromaddr = bindsocket.accept()
