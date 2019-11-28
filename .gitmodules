@@ -1,0 +1,4 @@
+[submodule "app/src/main/cpp"]
+	path = app/src/main/cpp
+	url = https://github.com/pgp/GrimaldoNative
+	branch = master
