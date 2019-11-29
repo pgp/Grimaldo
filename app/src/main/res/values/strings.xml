@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Grimaldo</string>
+    <string name="tag_fragment_FileSelect">Select file</string>
+    <string name="alert_OK">OK</string>
+    <string name="alert_cancel">Cancel</string>
+    <string name="alert_file_select">Select file</string>
 </resources>

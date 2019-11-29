@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:vaultActivity="it.pgp.grimaldo.VaultActivity" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="6"
+            android:text="Filename"
+            android:textColor="#0061d6"
+            android:textSize="15sp"
+            android:gravity="center_horizontal" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Show"
+            android:textColor="#ff4d00"
+            android:textSize="15sp"
+            android:gravity="center_horizontal" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Delete"
+            android:textColor="#ff4d00"
+            android:textSize="15sp"
+            android:gravity="center_horizontal" />
+
+    </LinearLayout>
+
+    <ListView android:id="@+id/ids_List"
+        android:fastScrollEnabled="true"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+    </ListView>
+
+    <LinearLayout
+        style="?android:attr/buttonBarStyle"
+        android:orientation="horizontal"
+        android:id="@+id/masterButtonsLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            style="?android:attr/buttonBarButtonStyle"
+            android:id="@+id/addNewIdentityBtn"
+            android:onClick="openFileSelector"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:text="Add identity"
+            android:layout_height="wrap_content" />
+        <Button
+            style="?android:attr/buttonBarButtonStyle"
+            android:id="@+id/genNewIdentityBtn"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:text="Generate identity"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+</LinearLayout>

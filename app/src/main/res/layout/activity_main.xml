@@ -22,19 +22,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="18sp"
-        android:text="Passphrase:" />
+        android:text="Key:" />
 
-    <EditText
-        android:id="@+id/passphrase"
+    <Spinner
+        android:id="@+id/keySpinner"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textPassword" />
+        android:layout_height="wrap_content" />
 
     <Button
-        android:text="Save values"
+        android:text="Show key manager"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="saveValues"
+        android:onClick="showVaultActivity"
         />
 
     <ImageButton
