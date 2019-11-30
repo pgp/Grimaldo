@@ -1,6 +1,8 @@
 package it.pgp.grimaldo.adapters;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,10 +19,7 @@ import java.util.List;
 
 import it.pgp.grimaldo.R;
 import it.pgp.grimaldo.VaultActivity;
-
-/**
- * Created by pgp on 12/02/17
- */
+import it.pgp.grimaldo.dialogs.KeyInfoDialog;
 
 public class IdentitiesVaultAdapter extends BaseAdapter implements ListAdapter {
     private final VaultActivity vaultActivity;
@@ -28,7 +27,6 @@ public class IdentitiesVaultAdapter extends BaseAdapter implements ListAdapter {
     private final List<String> containsPubkeys = new ArrayList<>();
     private final File idsDir;
 
-    // TODO on choosing private key, if public one is present, copy it as well
     public static final FilenameFilter idFilter = (dir, name) -> name.endsWith(VaultActivity.DEFAULT_PRV_EXT) ||
             name.endsWith(VaultActivity.DEFAULT_PUB_EXT);
 
@@ -75,8 +73,9 @@ public class IdentitiesVaultAdapter extends BaseAdapter implements ListAdapter {
         //Handle buttons and add onClickListeners
         ImageButton showBtn = view.findViewById(R.id.id_listitem_show);
         ImageButton deleteBtn = view.findViewById(R.id.id_listitem_delete);
+        ImageButton shareBtn = view.findViewById(R.id.id_listitem_share);
 
-        showBtn.setOnClickListener(v -> {/* TODO show basic text dialog with file content*/});
+        showBtn.setOnClickListener(v -> new KeyInfoDialog(vaultActivity, idsFilenames.get(position)).show());
         deleteBtn.setOnClickListener(v -> {
             String prvkname = idsFilenames.get(position);
             String pubkname = prvkname.substring(0,prvkname.length()-VaultActivity.DEFAULT_PRV_EXT.length())+VaultActivity.DEFAULT_PUB_EXT;
@@ -87,6 +86,21 @@ public class IdentitiesVaultAdapter extends BaseAdapter implements ListAdapter {
             String message=deleted?"Deleted!":"Delete error";
             Toast.makeText(vaultActivity,message,Toast.LENGTH_SHORT).show();
             notifyDataSetChanged();
+        });
+        shareBtn.setOnClickListener(v -> {
+            String prvkname = idsFilenames.get(position);
+            String pubkname = prvkname.substring(0,prvkname.length()-VaultActivity.DEFAULT_PRV_EXT.length())+VaultActivity.DEFAULT_PUB_EXT;
+            File g = new File(idsDir,pubkname);
+            if(!g.exists()) {
+                Toast.makeText(vaultActivity, "No public key available for this item", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            Intent sharingIntent = new Intent();
+            sharingIntent.setAction(Intent.ACTION_SEND);
+            sharingIntent.setType("*/*");
+            sharingIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(g));
+            sharingIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            vaultActivity.startActivity(Intent.createChooser(sharingIntent, "Share file using"));
         });
 
         return view;

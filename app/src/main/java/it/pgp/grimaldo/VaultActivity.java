@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -102,6 +103,7 @@ public class VaultActivity extends Activity implements FileSelectFragment.Callba
             }
 
             idVaultAdapter.notifyDataSetChanged();
+            // TODO find how to notify spinner in MainActivity (notifyDatasetChanged doesn't work)
             Toast.makeText(this,"Keypair imported successfully",Toast.LENGTH_SHORT).show();
         }
     }

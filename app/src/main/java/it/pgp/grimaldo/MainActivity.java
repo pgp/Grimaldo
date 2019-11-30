@@ -3,22 +3,29 @@ package it.pgp.grimaldo;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import java.io.File;
 
 import it.pgp.grimaldo.adapters.IdentitiesVaultAdapter;
+import it.pgp.grimaldo.utils.RootHandler;
 
 public class MainActivity extends Activity {
 
-    public static final String pLabel = "PASSPHRASE";
+    static {
+        // avoid messing up with content URIs
+        StrictMode.setVmPolicy(StrictMode.VmPolicy.LAX);
+    }
+
     public static final String ipLabel = "IP";
     public static final int PORT = 11112;
     EditText ipAddress;
-    Spinner keySpinner;
+    public Spinner keySpinner;
 
     protected ArrayAdapter<String> getAdapterWithFiles() {
         final File workingDir = new File(getFilesDir(), VaultActivity.KEYS_DIR);
@@ -39,26 +46,35 @@ public class MainActivity extends Activity {
         keySpinner.setAdapter(getAdapterWithFiles());
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+
     public void showVaultActivity(View unused) {
         startActivity(new Intent(this, VaultActivity.class));
     }
 
     public void unlock(View unused) {
         String ip = ipAddress.getText().toString();
-
-//        new Thread(()->{
-//            try {
-//                int retcode = new ProcessBuilder(
-//                        getApplicationInfo().nativeLibraryDir + "/libgrimald.so",
-//                        pass,
-//                        ip,
-//                        PORT+"").start().waitFor();
-//                runOnUiThread(()-> Toast.makeText(MainActivity.this,retcode==0?"Auth OK":"Auth failed, retcode "+retcode,Toast.LENGTH_SHORT).show());
-//            }
-//            catch (Exception e) {
-//                e.printStackTrace();
-//                runOnUiThread(()-> Toast.makeText(MainActivity.this,"Error calling native process",Toast.LENGTH_SHORT).show());
-//            }
-//        }).start();
+        if(ip.isEmpty()) {
+            Toast.makeText(this, "IP string is empty", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        new Thread(()->{
+            int[] returnCode = new int[1];
+            try {
+                Process p = RootHandler.executeCommandSimple(
+                        getApplicationInfo().nativeLibraryDir + "/libgrimald.so",
+                        new File(getFilesDir(), VaultActivity.KEYS_DIR),
+                        false,
+                        "client -a "+ip+" -p 11112 -k "+keySpinner.getSelectedItem().toString());
+                returnCode[0] = p.waitFor();
+            } catch (Exception e) {
+                e.printStackTrace();
+                returnCode[0] = -1222222222;
+            }
+            runOnUiThread(()->Toast.makeText(this, "Auth "+(returnCode[0]==0?"command sent":"failed, return code "+returnCode[0]), Toast.LENGTH_LONG).show());
+        }).start();
     }
 }
