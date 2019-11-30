@@ -1,7 +1,9 @@
 package it.pgp.grimaldo;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.view.View;
@@ -26,6 +28,17 @@ public class MainActivity extends Activity {
     public static final int PORT = 11112;
     EditText ipAddress;
     public Spinner keySpinner;
+    SharedPreferences sp;
+
+    public void loadValues() {
+        ipAddress.setText(sp.getString(ipLabel,""));
+    }
+
+    public void saveValues(View unused) {
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putString(ipLabel, ipAddress.getText().toString());
+        editor.apply();
+    }
 
     protected ArrayAdapter<String> getAdapterWithFiles() {
         final File workingDir = new File(getFilesDir(), VaultActivity.KEYS_DIR);
@@ -41,9 +54,11 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        sp = getSharedPreferences(getPackageName(), Context.MODE_PRIVATE);
         ipAddress = findViewById(R.id.ipAddress);
         keySpinner = findViewById(R.id.keySpinner);
         keySpinner.setAdapter(getAdapterWithFiles());
+        loadValues();
     }
 
     @Override
