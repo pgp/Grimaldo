@@ -53,6 +53,7 @@ public class SphincsPlusKeygenDialog extends Dialog {
             Toast.makeText(context, "Key generation "+(returnCode==0?"OK":"failed"), Toast.LENGTH_LONG).show();
             dismiss();
             context.idVaultAdapter.notifyDataSetChanged();
+            if(returnCode==0) context.setResult(VaultActivity.UpdatedKeysResCode);
         });
     }
 }

@@ -86,6 +86,7 @@ public class IdentitiesVaultAdapter extends BaseAdapter implements ListAdapter {
             String message=deleted?"Deleted!":"Delete error";
             Toast.makeText(vaultActivity,message,Toast.LENGTH_SHORT).show();
             notifyDataSetChanged();
+            vaultActivity.setResult(VaultActivity.UpdatedKeysResCode);
         });
         shareBtn.setOnClickListener(v -> {
             String prvkname = idsFilenames.get(position);

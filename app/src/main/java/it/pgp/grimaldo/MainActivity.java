@@ -101,7 +101,14 @@ public class MainActivity extends Activity {
     }
 
     public void showVaultActivity(View unused) {
-        startActivity(new Intent(this, VaultActivity.class));
+        startActivityForResult(new Intent(this, VaultActivity.class), VaultActivity.ReqCode);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == VaultActivity.ReqCode && resultCode == VaultActivity.UpdatedKeysResCode)
+            keySpinner.setAdapter(getAdapterWithFiles());
     }
 
     public static void doUnlock(Context context, String ip, String keyName) {
