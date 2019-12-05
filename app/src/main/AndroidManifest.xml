@@ -20,12 +20,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".DoUnlockActivity"
+            android:theme="@style/Theme.UserDialog"
+            android:excludeFromRecents="true"
+            />
 
         <receiver android:name=".MainWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-                <action android:name="it.pgp.grimaldo.appwidget.action.STANDARD_UPDATE" />
-                <action android:name="it.pgp.grimaldo.appwidget.action.ON_DEMAND_UPDATE" />
             </intent-filter>
 
             <meta-data

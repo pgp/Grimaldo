@@ -6,7 +6,7 @@
         <ImageButton
             android:id="@+id/widget_unlock"
             android:src="@drawable/lock"
-            android:background="@android:color/transparent"
+            android:background="#4C9000FF"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 </LinearLayout>
