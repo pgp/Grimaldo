@@ -7,8 +7,8 @@ android {
         applicationId "it.pgp.grimaldo"
         minSdkVersion 24
         targetSdkVersion 28
-        versionCode 113191205
-        versionName "1.1.3"
+        versionCode 113191227
+        versionName "1.1.4"
     }
     buildTypes {
         release {

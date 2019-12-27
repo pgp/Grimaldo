@@ -1,6 +1,7 @@
 package it.pgp.grimaldo.dialogs;
 
 import android.app.Dialog;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -21,6 +22,7 @@ public class SphincsPlusKeygenDialog extends Dialog {
 
     public SphincsPlusKeygenDialog(VaultActivity context) {
         super(context);
+        setTitle("Keypair name");
         setContentView(R.layout.keygen_dialog);
         name = findViewById(R.id.keygenNameEditText);
         ok = findViewById(R.id.keygenOkButton);

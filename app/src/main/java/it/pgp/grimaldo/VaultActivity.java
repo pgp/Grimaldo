@@ -1,6 +1,8 @@
 package it.pgp.grimaldo;
 
+import android.Manifest;
 import android.app.Activity;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -9,9 +11,11 @@ import android.widget.Toast;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.EnumSet;
 
 import it.pgp.grimaldo.adapters.IdentitiesVaultAdapter;
 import it.pgp.grimaldo.dialogs.SphincsPlusKeygenDialog;
+import it.pgp.grimaldo.enums.Permissions;
 import it.pgp.grimaldo.utils.FileSelectFragment;
 import it.pgp.grimaldo.utils.RootHandler;
 
@@ -32,7 +36,41 @@ public class VaultActivity extends Activity implements FileSelectFragment.Callba
 
     public IdentitiesVaultAdapter idVaultAdapter;
 
+    public boolean checkDangerousPermissions() {
+        EnumSet<Permissions> nonGrantedPerms = EnumSet.noneOf(Permissions.class);
+        for (Permissions p : Permissions.values())
+            if (checkSelfPermission(p.value()) != PackageManager.PERMISSION_GRANTED)
+                nonGrantedPerms.add(p);
+
+        return nonGrantedPerms.isEmpty();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (grantResults.length == 0) { // request cancelled
+            Toast.makeText(this, "Storage permissions denied", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        for (int grantResult : grantResults) {
+            if (grantResult != PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this, "Storage permissions denied", Toast.LENGTH_SHORT).show();
+                return;
+            }
+        }
+
+        Toast.makeText(this, "Storage permissions granted", Toast.LENGTH_SHORT).show();
+        openFileSelector(null);
+    }
+
     public void openFileSelector(View unused) {
+        if(!checkDangerousPermissions()) {
+            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},1);
+            return;
+        }
+
         String fragTag = getResources().getString(R.string.tag_fragment_FileSelect);
 
         // Set up a selector for file selection rather than directory selection.
