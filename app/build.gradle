@@ -2,13 +2,13 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 28
-    buildToolsVersion "29.0.1"
     defaultConfig {
         applicationId "it.pgp.grimaldo"
         minSdkVersion 24
         targetSdkVersion 28
-        versionCode 113191227
-        versionName "1.1.4"
+        ndkVersion '21.3.6528147'
+        versionCode 115200922
+        versionName "1.1.5"
     }
     buildTypes {
         release {
